@@ -1,0 +1,80 @@
+<div class="h-max w-full p-4 md:p-24 flex flex-col gap-8 bg-black/80">
+
+  <form [formGroup]="postform" class="h-max w-full flex flex-col items-start gap-6 " action="" (ngSubmit)="OnSubmit()" >
+
+  <div class="h-max w-full flex flex-col md:flex-row items-start gap-6 ">
+
+    <div class="h-max w-full rounded-lg p-4 pt-8 flex flex-col gap-1 border-[2px] border-white/30 bg-black">
+      <label class="text-white/80 text-lg md:text-xl pl-2" for="">Title</label>
+      <input class="h-12 w-full p-2 outline-none border-[1px] border-white/30 rounded-md bg-white/20 text-white"
+      type="text"
+      (keyup)="OnTitleChange($event)"
+      formControlName = "title"
+      [ngClass]="{'border-[1px] border-red-500' : fc.title.touched && fc.title.invalid}"
+      >
+
+      <div *ngIf="fc.title.errors?.required">
+        <div *ngIf="fc.title.touched && fc.title.invalid" class="h-12 w-full -mt-[6px]  rounded-md p-3 flex justify-start items-center text-lg border-[1px] border-t-0 border-red-600 text-red-600">Title is required</div>
+      </div>
+      <div *ngIf="fc.title.errors?.minlength" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md">
+        <div *ngIf="fc.title.touched && fc.title.invalid" class="h-full w-full p-3 flex justify-start items-center text-lg text-red-600">Title must be atleast 8 charectors long</div>
+      </div>
+
+      <label class="text-white/80 text-lg md:text-xl pl-2 mt-6" for="">Permalink</label>
+      <input class="h-12 w-full p-2 outline-none border-[1px] border-white/30 rounded-md bg-white/20 text-white" type="text" [(ngModel)] = "permalink" name="permalink" formControlName="permalink" >
+      <div *ngIf="fc.permalink.errors?.required" >
+        <div *ngIf="fc.permalink.touched && fc.permalink.invalid" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md p-3 flex justify-start items-center text-lg text-red-600">Permalink is required</div>
+      </div>
+
+      <label class="text-white/80 text-lg md:text-xl pl-2 mt-6" for="">Excerpt</label>
+      <textarea class="h-72 md:h-96 w-full p-3 outline-none border-[1px] border-white/30 rounded-md bg-white/20 text-white" type="text" formControlName="excerpt" [ngClass]="{'border-red-500':fc.excerpt.touched && fc.excerpt.invalid}"></textarea>
+
+      <div *ngIf="fc.excerpt.errors?.required" >
+        <div *ngIf="fc.excerpt.touched && fc.excerpt.invalid" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md p-3 flex justify-start items-center text-lg text-red-600">Excerpt is required</div>
+      </div>
+      <div *ngIf="fc.excerpt.errors?.minlength" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md">
+        <div *ngIf="fc.excerpt.touched && fc.excerpt.invalid" class="h-full w-full p-3 flex justify-start items-center text-lg text-red-600">Excerpt must be atleast 15 charectors long</div>
+      </div>
+    </div>
+
+    <div class="h-max w-full rounded-lg p-4 pt-8 flex flex-col gap-6 border-[2px] border-white/30 bg-black">
+  <div>
+    <label class="text-white/80 text-lg md:text-xl pl-2" for="">Please select a post category</label>
+    <select class="h-12 w-full p-3 mt-1 outline-none border-[1px] border-white/30 bg-white/20 rounded-md text-white" formControlName="category">
+      <option class="text-black bg-white/20" value="" disabled>Please select a category</option>
+      <option class="text-black bg-white/20" value="{{item.id}}-{{item.data.category}}" *ngFor="let item of Categories" > {{item.data.category}} </option>
+    </select>
+    <div *ngIf="fc.category.errors?.required" class="">
+      <div *ngIf="fc.category.touched && fc.excerpt.invalid" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md p-3 flex justify-start items-center text-lg text-red-600">Category is required</div>
+    </div>
+  </div>
+
+  <div>
+    <label class="text-white/80 text-lg pl-2 md:text-xl" for="">Post Image</label>
+    <div class="h-80 w-full mt-2 md:h-[447px] rounded-lg border-[2px] border-white/30 bg-white/20">
+      <img class="h-full w-full object-contain rounded-lg" [src]="Imgsrc" alt="">
+    </div>
+    <input class="h-max w-full p-2 mt-1 md:mt-2 outline-none border-[1px] border-white/30 bg-white/20 rounded-md text-white" type="file" accept="image/*" (change)="Onchangeimg($event)" formControlName = "postImg">
+    <div *ngIf="fc.postImg.errors?.required" class="">
+      <div *ngIf="fc.postImg.touched && fc.excerpt.invalid" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md p-3 flex justify-start items-center text-lg text-red-600">Post Image is required</div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+  <div class="h-max w-full rounded-lg p-4 flex flex-col gap-1 border-[2px] border-white/30 bg-black">
+    <label class="text-white/80 text-lg md:text-xl pl-2 mt-2" for="">Content</label>
+    <angular-editor class="h-62 text-black bg-white/40" placeholder="Add your content here" formControlName="content" ></angular-editor>
+    <div *ngIf="fc.content.errors?.required" class="">
+      <div *ngIf="fc.content.touched && fc.excerpt.invalid" class="h-12 w-full -mt-[6px] border-[1px] border-t-0 border-red-600 rounded-md p-3 flex justify-start items-center text-lg text-red-600">Content is required</div>
+    </div>
+  </div>
+
+  <div class="h-max w-full flex items-center justify-center gap-4 mt-3 mb-12">
+    <button [disabled]="postform.invalid" type="submit" class="h-max w-max rounded-md p-4 md:p-3 md:px-6 md:-ml-0 bg-black border-b-[2px] border-r-[2px] border-white/30 text-white text-sm md:text-lg" >Add To</button>
+    <button routerLink="/AllPost" class="h-max w-max rounded-md p-4 md:p-3 md:px-6 md:-ml-0 bg-black border-b-[2px] border-r-[2px] border-white/30 text-yellow-500 text-sm md:text-lg" >Back To Post</button>
+  </div>
+
+</form>
+</div>
+

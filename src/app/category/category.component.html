@@ -1,0 +1,48 @@
+<div class="h-screen w-full flex flex-col justify-start items-center pt-16 bg-black/80">
+  <div class="h-max w-[90%] md:w-[40%] flex flex-col gap-8 items-center p-8 md:p-12 rounded-md bg-black/50">
+    <div class="w-full  md:w-[80%] h-max flex flex-col justify-center gap-3 items-center">
+      <h1 class="text-4xl font-medium text-center text-white"> {{type}} Categories</h1>
+      <p class="text-gray-400 text-center">You can {{type}} new categories from here...!</p>
+    </div>
+    <div class="h-[40%] w-full flex flex-col justify-center items-center md:w-[75%] ">
+      <form class="h-full w-full flex flex-col justify-center items-center gap-6 md:gap-8 md:flex-row" action="" #CategoryForm = 'ngForm' (ngSubmit)="submit(CategoryForm)" >
+
+        <div>
+          <input class="h-full w-full p-4 md:p-3 rounded-md bg-black text-white/80"
+        placeholder="Enter new categories here...!"
+        type="text"
+        name="Category"
+        [(ngModel)]="editdata"
+        #newcategory = 'ngModel'
+        required
+        [ngClass]="{'border-[1px] border-red-500': newcategory.touched && newcategory.invalid}"
+        >
+        <div *ngIf=" newcategory.touched && newcategory.invalid " class="h-full w-full bg-red-500/70 p-3 rounded-b-md">Invaid Input Box</div>
+        </div>
+
+        <button class="h-max w-max rounded-md p-4 md:p-3 md:-ml-0 bg-black border-b-[2px] border-r-[2px] border-white/30 text-white text-sm" [disabled]="CategoryForm.invalid" >{{type}} Categories</button>
+      </form>
+    </div>
+  </div>
+
+<div *ngIf=" listarray != '' " class="h-full w-full flex justify-center items-start py-12 md:p-12 ">
+  <div class="h-max w-[95%] md:w-[65%] p-4 bg-black/50 rounded-lg">
+   <div class="h-12 w-full flex items-center mb-4 border-b-[1px] border-white">
+    <p class="h-full w-14  flex justify-center items-center text-sm md:text-xl font-medium text-white">No</p>
+    <p class="h-full w-full flex justify-start pl-5 md:pl-10 items-center text-sm md:text-xl font-medium text-white">Category</p>
+    <p class="h-full w-28 flex justify-center items-center text-sm md:text-xl font-medium text-white">Action</p>
+   </div>
+
+   <div class="h-12 w-full flex items-center border-b-[0.1px] border-white/20" *ngFor="let item of listarray ; let i = index">
+    <p class="h-full w-14 flex justify-center items-center text-sm md:text-xl font-medium text-white/70">{{i+1}}</p>
+    <p class="h-full w-full pl-6 md:pl-11 flex justify-start items-center text-sm md:text-xl font-medium text-white/70">{{item.data.category}}</p>
+    <div class="h-full w-max flex items-start justify-center gap-2">
+      <button (click)="Onedit(item.data.category , item.id )" class="h-max w-max p-1 rounded-md text-sm md:text-xl bg-yellow-600 border-b-[2px] border-r-[2px] border-white/30">Edit</button>
+      <button (click)="Ondelect(item.id)" class="h-max w-max p-1 rounded-md text-sm md:text-xl bg-red-500 border-b-[2px] border-r-[2px] border-white/30">DELECT</button>
+    </div>
+   </div>
+  </div>
+</div>
+
+</div>
+
